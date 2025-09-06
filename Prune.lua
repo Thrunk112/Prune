@@ -7,6 +7,7 @@ local AlwaysRemove = {
 }
 
 -- Buffs that can be removed if near cap (icon fragment → buff name) In order of most likely to least likely to be removed
+-- Remove unneeded buffs for preformance
 local RemoveNearCap = {
     ["Spell_Holy_PrayerofSpirit"]     = "Prayer of Spirit",
     ["Spell_Holy_DivineSpirit"]       = "Divine Spirit", 
@@ -17,25 +18,45 @@ local RemoveNearCap = {
     ["Spell_Holy_InnerFire"]          = "Faithful", --Inner fire issue? 2% less dmg taken
     ["Spell_Nature_HealingWay"]       = "Healing Way", --bigger shaman heals
     ["Spell_Holy_AuraMastery"]        = "Daybreak", --400 healing
-	["Spell_Nature_NullifyDisease"]   = "Abolish Disease",
-	["Spell_Nature_NullifyPoison_02"] = "Abolish Poison",
-    ["Spell_Nature_AbolishMagic"]     = "Dampen Magic", --3% less dmg. 2% less heal
 	["Spell_Holy_BlessingOfProtection"] = "Armor of Faith", --500 dmg shield & no pushback
-	["Spell_Holy_PowerWordShield"]		="Power Word: Shield", --1k dmg shield
+	["Spell_Holy_PowerWordShield"]		= "Power Word: Shield", --1k dmg shield
+	["Spell_Holy_GreaterBlessingofSanctuary"] = "Blessing of Sanctuary",
+	--["Spell_Nature_AbolishMagic"]     = "Dampen Magic", --3% less dmg. 2% less heal
+	--["Spell_Nature_NullifyDisease"]   = "Abolish Disease",
+	["Spell_Nature_NullifyPoison_02"] = "Abolish Poison",
+	["Spell_Holy_PrayerofShadowProtection"] = "Shadow Protection",
+	["Spell_Nature_ResistNature"]     = "Regrowth",
     ["Spell_Holy_Renew"]              = "Renew",
     ["Spell_Nature_Rejuvenation"]     = "Rejuvenation",
-    ["Spell_Nature_ResistNature"]     = "Regrowth",
-    ["Spell_Nature_BloodLust"]        = "Thirst for Blood", --movement speed ALSO BLOODLUST turn of in shaman group!!!
+    ["Spell_Nature_BloodLust"]        = "Thirst for Blood", --movement speed ALSO BLOODLUST turn off in shaman group!!!
     ["Spell_Fire_Fire"]               = "Cozy Fire / Chili / Rocket Boots?", --remove if rocket boots
+	["Spell_Holy_GreaterBlessingofLight"] = "Blessing of Light / Heathen's Light",
     --["Spell_Shadow_Haunting"]         = "Ghost Costume",
     --["INV_Misc_Head_Gnome_02"]        = "Gnome Costume (Pink)",
     --["INV_Misc_Head_Gnome_01"]        = "Leper Gnome Costume",
-    --["Ability_Kick"]                  = "Speed Potion / Ninja Costume",  --remove if Speeed potion
+    --["Ability_Kick"]                  = "Speed Potion / Ninja Costume",  --remove if Speed potion
     --["Ability_Rogue_Disguise"]        = "NoggenFogger/ Costumes (Gordok, etc.)",
 }
 
 
 local MaxBuffs = 30
+
+local PruneDebug = false -- default false
+
+local function SlashCmdHandler(msg)
+    if msg == "on" then
+        PruneDebug = true
+        DEFAULT_CHAT_FRAME:AddMessage("Prune debug enabled", 1, 1, 0)
+    elseif msg == "off" then
+        PruneDebug = false
+        DEFAULT_CHAT_FRAME:AddMessage("Prune debug disabled", 1, 1, 0)
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("Usage: /prune on | off to toggle debug", 1, 1, 0)
+    end
+end
+
+SLASH_PRUNE1 = "/prune"
+SlashCmdList["PRUNE"] = SlashCmdHandler
 
 -- Count current player buffs
 local function CountBuffs()
@@ -49,6 +70,12 @@ local function CountBuffs()
     return count
 end
 
+local function PrunePrint(msg)
+    if PruneDebug then
+        DEFAULT_CHAT_FRAME:AddMessage("<Prune> " .. msg, 1, 1, 0)
+    end
+end
+
 -- Remove "always-remove" buffs
 local function RemoveAlways()
     for i = 0, 63 do
@@ -59,7 +86,7 @@ local function RemoveAlways()
                 for icon, name in pairs(AlwaysRemove) do
                     if string.find(texture, icon) then
                         CancelPlayerBuff(index)
-                        DEFAULT_CHAT_FRAME:AddMessage("<Prune> Removed " .. name)
+                        PrunePrint("Removed " .. name)
                         return true
                     end
                 end
@@ -81,7 +108,7 @@ local function RemoveForCap()
                 local texture = GetPlayerBuffTexture(buffIndex)
                 if texture and string.find(texture, icon) then
                     CancelPlayerBuff(buffIndex)
-                    DEFAULT_CHAT_FRAME:AddMessage("<Prune> Removed " .. name  .." due to Buff Cap")
+                    PrunePrint("Removed " .. name .. " due to Buff Cap")
                     return
                 end
             end
@@ -89,11 +116,11 @@ local function RemoveForCap()
     end
 end
 
--- Frame and event handler
-local SmartUnbuffFrame = CreateFrame("Frame", nil, UIParent)
-SmartUnbuffFrame:RegisterEvent("PLAYER_AURAS_CHANGED")
 
-local function OnEvent()
+local PruneFrame = CreateFrame("Frame", nil, UIParent)
+PruneFrame:RegisterEvent("PLAYER_AURAS_CHANGED")
+
+local function PruneEvent()
     if event == "PLAYER_AURAS_CHANGED" then
         if RemoveAlways() then 
             return 
@@ -102,5 +129,5 @@ local function OnEvent()
     end
 end
 
-SmartUnbuffFrame:SetScript("OnEvent", OnEvent)
--- ==========================================
+PruneFrame:SetScript("OnEvent", PruneEvent)
+
