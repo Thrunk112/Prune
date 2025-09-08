@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Prune
+## Author: Thrunk
+## Version: 1
+## Notes: Prune Buff Cap Protection
+
+Prune.lua
+
