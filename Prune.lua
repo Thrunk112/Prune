@@ -9,27 +9,27 @@ local RemoveNearCap = {
     {id = 27841, name = "Divine Spirit"},            -- r4
     {id = 52428, name = "Heathen's Light Heal"},	 -- From pala libram
     {id = 7353,  name = "Cozy Fire"},				 -- 4 spirit version
-    {id = 51001, name = "Bloodmoon Vampirism"},      --5% vamp proc from Bloodmoon Axe
+    {id = 51001, name = "Bloodmoon Vampirism"},      -- 5% vamp proc from Bloodmoon Axe
     {id = 28750, name = "Blessing of the Claw"},
     {id = 16242, name = "Ancestral Healing"},
     {id = 15361, name = "Inspiration"},
     {id = 45862, name = "Faithful"},				 -- From pala libram
     {id = 29202, name = "Healing Way"},
     {id = 28810, name = "Armor of Faith"},
-    {id = 27607, name = "Power Word: Shield"},        --r10 --10901?
+    {id = 10901, name = "Power Word: Shield"},        --r10
     {id = 25899, name = "Blessing of Sanctuary"},
     {id = 27683, name = "Prayer of Shadow Protection"},
-    {id = 16874, name = "Shadow Protection"},        -- 10958 if it doesnt work
+    {id = 10958, name = "Shadow Protection"},        -- r3
     {id = 8451,  name = "Dampen Magic"},
     {id = 2893,  name = "Abolish Poison"},
-    {id = 552,   name = "Abolish Disease"},          -- not positive on id
+    {id = 552,   name = "Abolish Disease"},          
     {id = 51322, name = "Daybreak"},
     {id = 52430, name = "Heathen's Light Str"},		 -- From pala libram
     {id = 9858,  name = "Regrowth"},                 -- r9
     {id = 25315, name = "Renew"},                    -- r10
     {id = 25299, name = "Rejuvenation"},             -- r11 from aq book
     {id = 51670, name = "Thirst for Blood"},		 -- Bloodthirst movement speed
-    --{id = 19977, name = "Blessing of Light"},
+    --{id = 25890, name = "Blessing of Light"},
     --{id = 24740, name = "Wisp Costume"},
 }
 
