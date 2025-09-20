@@ -16,7 +16,6 @@ local RemoveNearCap = {
     {id = 16237, name = "Ancestral Fortitude"},		 --r3
     {id = 28790, name = "Holy Power"},
     {id = 45862, name = "Faithful"},				 -- From pala libram
-    {id = 29202, name = "Healing Way"},              --either incorrect ID or need more ranks
     {id = 28810, name = "Armor of Faith"},
     {id = 10901, name = "Power Word: Shield"},        --r10
     {id = 25899, name = "Blessing of Sanctuary"},
@@ -25,6 +24,7 @@ local RemoveNearCap = {
     --{id = 8451,  name = "Dampen Magic"},
     --{id = 2893,  name = "Abolish Poison"},
     --{id = 552,   name = "Abolish Disease"},          
+    {id = 29203, name = "Healing Way"},              --r3    
     {id = 51322, name = "Daybreak"},
     {id = 52430, name = "Heathen's Light Str"},		 -- From pala libram
     --{id = 9858,  name = "Regrowth"},                 -- r9
@@ -110,4 +110,5 @@ local function PruneEvent()
 end
 
 PruneFrame:SetScript("OnEvent", PruneEvent)
+
 
