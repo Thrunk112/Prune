@@ -35,7 +35,7 @@ local RemoveNearCap = {
     --{id = 24740, name = "Wisp Costume"},
 }
 
-local MaxBuffs   = 30
+local MaxBuffs   = 31
 local PruneDebug = false
 
 local function SlashCmdHandler(msg)
@@ -110,5 +110,6 @@ local function PruneEvent()
 end
 
 PruneFrame:SetScript("OnEvent", PruneEvent)
+
 
 
