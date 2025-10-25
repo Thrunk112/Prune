@@ -3,6 +3,8 @@
 ## Author: Thrunk
 ## Version: 1
 ## Notes: Prune Buff Cap Protection
+## SavedVariablesPerCharacter: PruneDB
 
 Prune.lua
+
 
