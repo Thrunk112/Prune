@@ -1,21 +1,46 @@
 # Prune
 * Requires SuperWoW
 * Avoid hitting Buff Cap by removing the lowest prio buff when close to buff cap
+* Warning * Tanks and ret Paladins are likely to be over buff cap anyway and may benefit less from this addon
 ___
-
-### Beta
-
-* No in-game UI, Edit Prune.lua to change the prio order
-* Currently set up for a lvl 60 DPS Fury Warrior. Adjust or comment out buffs as needed
-* Rearrange order in RemoveNearCap to change prio. Use -- to comment out unneeded buffs
- 
-* <img width="630" height="714" alt="image" src="https://github.com/user-attachments/assets/36125652-9351-4c7e-b553-b3c75818a7ae" />
+### Menu
+<img width="1014" height="505" alt="image" src="https://github.com/user-attachments/assets/24a28009-11b8-4f1a-96f8-d24b1b3d409d" />
 
 ___
-
 ### Settings
 
-'/prune on' or '/prune off' to toggle printing when buffs are removed to chat. Off by default when logging in. Change PruneDebug to true if you want to always print
+'/prune' to bring up menu
+
+Untracked Buffs are untracked
+Always Remove are removed right away
+Remove at Cap are removed when you reach near buff cap, removing the highest on the list first
+___
+### Thrunk Order
+
+Always Remove: 
+Arcane Brilliance,
+Arcane Intellect,
+Blessing of Protection
 
 
-
+Remove at Cap:
+Divine Spirit,
+Prayer of Spirit,
+Heathen's Light Heal,
+Cozy Fire,
+Bloodmoon Vamp,
+Blessing of the claw,
+Ancestral Healing,
+Inspiration,
+Ancestral Fort,
+Holy Power,
+Faithful,
+Armor of Faith,
+Power Word: Shield,
+Blessing of Sanctuary,
+Prayer of Shadow Protection,
+Shadow Protection,
+Healing Way,
+Daybreak,
+Heathen's Light Str,
+Thirst for Blood
