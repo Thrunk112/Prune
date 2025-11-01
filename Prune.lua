@@ -158,7 +158,7 @@ AllBuffsFrame.title:SetPoint("TOPLEFT",15,-5)
 AllBuffsFrame.title:SetText("Untracked Buffs")
 AllBuffsFrame.scroll = CreateFrame("ScrollFrame", "AllBuffsScrollFrame", AllBuffsFrame, "UIPanelScrollFrameTemplate")
 AllBuffsFrame.scroll:SetPoint("TOPLEFT",5,-25)
-AllBuffsFrame.scroll:SetPoint("BOTTOMRIGHT",-5,5)
+AllBuffsFrame.scroll:SetPoint("BOTTOMRIGHT",-20,5)
 AllBuffsFrame.content = CreateFrame("Frame", "AllBuffsScrollChild", AllBuffsFrame.scroll)
 AllBuffsFrame.content:SetWidth(AllBuffsFrame:GetWidth()-20)
 AllBuffsFrame.content:SetHeight(1)
@@ -498,5 +498,6 @@ PruneFrame:SetScript("OnEvent",function()
 		RemoveForCap()
 	end
 end)
+
 
 
