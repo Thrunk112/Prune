@@ -25,6 +25,7 @@ local BuffList = {
 {id=45862,name="Faithful",icon="Interface\\Icons\\Spell_Holy_DevotionAura"},
 {id=52428,name="Heathen's Light Heal",icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofLight"},
 {id=52430,name="Heathen's Light Str",icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofLight"},
+{id =29203,name ="Healing Way",icon="Interface\\Icons\\Spell_Nature_HealingWay"},
 {id=28790,name="Holy Power",icon="Interface\\Icons\\Spell_Magic_MageArmor"},
 {id=15361,name="Inspiration",icon="Interface\\Icons\\Spell_Holy_LayOnHands"},
 {id=10901,name="Power Word: Shield",icon="Interface\\Icons\\Spell_Holy_PowerWordShield"},
@@ -497,4 +498,5 @@ PruneFrame:SetScript("OnEvent",function()
 		RemoveForCap()
 	end
 end)
+
 
