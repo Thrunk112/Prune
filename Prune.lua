@@ -469,6 +469,7 @@ SlashCmdList["PRUNEUI"]=function()
     if Prune_Optionsmenu:IsShown() then 
 		Prune_Optionsmenu:Hide() 
 	else 
+	AllPruneButtons = {}
 	RefreshBuffList()
 	RefreshList(AlwaysFrame, PruneDB.AlwaysRemove)
 	RefreshList(CapFrame, PruneDB.RemoveNearCap) 
@@ -478,7 +479,7 @@ end
 
 local function InitUI()
 	Prune_Optionsmenu.debugCheckbox:SetChecked(PruneDB.Debug)
-	--PruneDebug = PruneDB.Debug
+	AllPruneButtons = {}
 	RefreshBuffList()
 	RefreshList(AlwaysFrame, PruneDB.AlwaysRemove)
 	RefreshList(CapFrame, PruneDB.RemoveNearCap)
@@ -496,3 +497,4 @@ PruneFrame:SetScript("OnEvent",function()
 		RemoveForCap()
 	end
 end)
+
