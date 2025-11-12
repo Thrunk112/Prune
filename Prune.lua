@@ -23,9 +23,9 @@ local BuffList = {
 {id=7353,name="Cozy Fire",icon="Interface\\Icons\\Spell_Fire_Fire"},
 {id=51322,name="Daybreak",icon="Interface\\Icons\\Spell_Holy_AuraMastery"},
 {id=45862,name="Faithful",icon="Interface\\Icons\\Spell_Holy_DevotionAura"},
+{id =29203,name ="Healing Way",icon="Interface\\Icons\\Spell_Nature_HealingWay"},
 {id=52428,name="Heathen's Light Heal",icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofLight"},
 {id=52430,name="Heathen's Light Str",icon="Interface\\Icons\\Spell_Holy_GreaterBlessingofLight"},
-{id =29203,name ="Healing Way",icon="Interface\\Icons\\Spell_Nature_HealingWay"},
 {id=28790,name="Holy Power",icon="Interface\\Icons\\Spell_Magic_MageArmor"},
 {id=15361,name="Inspiration",icon="Interface\\Icons\\Spell_Holy_LayOnHands"},
 {id=10901,name="Power Word: Shield",icon="Interface\\Icons\\Spell_Holy_PowerWordShield"},
@@ -44,6 +44,20 @@ local MaxBuffs   = 31
 local selectedBuff = nil
 local buffButtons = {}
 local selectedButton = nil
+local AlwaysRemoveMap = {}
+local RemoveNearCapMap = {}
+
+local function BuildMaps()
+    AlwaysRemoveMap = {}
+    for _, entry in ipairs(PruneDB.AlwaysRemove) do
+        AlwaysRemoveMap[entry.id] = entry.name
+    end
+
+    RemoveNearCapMap = {}
+    for _, entry in ipairs(PruneDB.RemoveNearCap) do
+        RemoveNearCapMap[entry.id] = entry.name
+    end
+end
 
 local function PrunePrint(msg)
     if PruneDebug then 
@@ -64,36 +78,27 @@ local function CountBuffs()
 end
 
 local function RemoveAlways()
-    local i=0
-    while i<=63 do
-        local spellId=GetPlayerBuffID(i)
-        local j=1
-        while j<=table.getn(PruneDB.AlwaysRemove) do
-            local entry=PruneDB.AlwaysRemove[j]
-            if spellId==entry.id then 
-				CancelPlayerBuff(i)
-				PrunePrint("Removed "..entry.name) 
-				return true 
-			end
-            j=j+1
+    for i = 0, 63 do
+        local id = GetPlayerBuffID(i)
+        if id and AlwaysRemoveMap[id] then
+            CancelPlayerBuff(i)
+            PrunePrint("Removed " .. AlwaysRemoveMap[id])
+            return true
         end
-        i=i+1
     end
-    return false
 end
 
 local function RemoveForCap()
-    if CountBuffs()<=MaxBuffs then return end
-    local j=1
-    while j<=table.getn(PruneDB.RemoveNearCap) do
-        local entry=PruneDB.RemoveNearCap[j]
-        local i=0
-        while i<=63 do
-            local id=GetPlayerBuffID(i)
-            if id==entry.id then CancelPlayerBuff(i) PrunePrint("Removed "..entry.name.." for buff cap") return end
-            i=i+1
+    if CountBuffs() <= MaxBuffs then return end
+    for _, entry in ipairs(PruneDB.RemoveNearCap) do
+        for i = 0, 63 do
+            local id = GetPlayerBuffID(i)
+            if id and id == entry.id then
+                CancelPlayerBuff(i)
+                PrunePrint("Removed " .. entry.name .. " for buff cap")
+                return
+            end
         end
-        j=j+1
     end
 end
 
@@ -137,6 +142,7 @@ end)
 
 Prune_Optionsmenu.debugCheckbox = CreateFrame("CheckButton", nil, Prune_Optionsmenu, "UICheckButtonTemplate")
 Prune_Optionsmenu.debugCheckbox:SetPoint("LEFT", Prune_Optionsmenu.title, "RIGHT", 25, 0)
+
 Prune_Optionsmenu.debugCheckbox.text = Prune_Optionsmenu.debugCheckbox:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 Prune_Optionsmenu.debugCheckbox.text:SetPoint("LEFT", Prune_Optionsmenu.debugCheckbox, "RIGHT", 4, 0)
 Prune_Optionsmenu.debugCheckbox.text:SetText("Print when Buffs are removed")
@@ -146,6 +152,7 @@ Prune_Optionsmenu.debugCheckbox:SetScript("OnClick", function()
     PruneDebug = this:GetChecked() 
     PruneDB.Debug = PruneDebug
 end)
+
 
 local AllBuffsFrame = CreateFrame("Frame", nil, Prune_Optionsmenu)
 AllBuffsFrame:SetWidth(250)
@@ -282,9 +289,11 @@ row:SetScript("OnClick", function()
         CapFrame.selectedEntry = nil
     end
 end)
+
     table.insert(AllPruneButtons, row)
     return row
 end
+
 
 local function SelectButton(btn)
     local i=1
@@ -395,6 +404,7 @@ AddAlwaysBtn:SetScript("OnClick",function()
     RefreshList(AlwaysFrame, PruneDB.AlwaysRemove) 
 	RefreshList(CapFrame, PruneDB.RemoveNearCap) 
 	RefreshBuffList()
+	BuildMaps()
 end)
 
 local AddCapBtn=CreateFrame("Button",nil,Prune_Optionsmenu,"UIPanelButtonTemplate")
@@ -407,6 +417,7 @@ AddCapBtn:SetScript("OnClick",function()
     RefreshList(CapFrame, PruneDB.RemoveNearCap) 
 	RefreshList(AlwaysFrame, PruneDB.AlwaysRemove) 
 	RefreshBuffList()
+	BuildMaps()
 end)
 
 local RemoveBtn=CreateFrame("Button",nil,Prune_Optionsmenu,"UIPanelButtonTemplate")
@@ -427,6 +438,7 @@ RemoveBtn:SetScript("OnClick",function()
     RefreshList(AlwaysFrame, PruneDB.AlwaysRemove) 
 	RefreshList(CapFrame, PruneDB.RemoveNearCap) 
 	RefreshBuffList()
+	BuildMaps()
 end)
 
 local MoveUpBtn=CreateFrame("Button",nil,Prune_Optionsmenu,"UIPanelButtonTemplate")
@@ -445,6 +457,7 @@ MoveUpBtn:SetScript("OnClick",function()
     end
     swap(PruneDB.RemoveNearCap)
     RefreshList(CapFrame, PruneDB.RemoveNearCap) 
+	BuildMaps()
 end)
 
 local MoveDownBtn=CreateFrame("Button",nil,Prune_Optionsmenu,"UIPanelButtonTemplate")
@@ -462,8 +475,10 @@ MoveDownBtn:SetScript("OnClick",function()
         end
     end
     swap(PruneDB.RemoveNearCap)
-    RefreshList(CapFrame, PruneDB.RemoveNearCap) 
+    RefreshList(CapFrame, PruneDB.RemoveNearCap)
+	BuildMaps()	
 end)
+
 
 SLASH_PRUNEUI1="/prune"
 SlashCmdList["PRUNEUI"]=function()
@@ -484,6 +499,7 @@ local function InitUI()
 	RefreshBuffList()
 	RefreshList(AlwaysFrame, PruneDB.AlwaysRemove)
 	RefreshList(CapFrame, PruneDB.RemoveNearCap)
+	BuildMaps()
 end
 
 local PruneFrame=CreateFrame("Frame")
@@ -498,6 +514,3 @@ PruneFrame:SetScript("OnEvent",function()
 		RemoveForCap()
 	end
 end)
-
-
-
